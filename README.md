@@ -1,9 +1,9 @@
 # eff_contraception_methods
 Tool for calculating and visualizing probability of failure in N years for given method(s).
 
-## source of data is Contraceptive failure in the United States. Trussell,J. Contraception,2011,Vol.83(5),p.398
+source of data is Contraceptive failure in the United States. Trussell,J. Contraception,2011,Vol.83(5),p.398
 
-The MIT License (MIT)
+## The MIT License (MIT)
 
 Copyright (c) 2015 Travis Dawry
 
