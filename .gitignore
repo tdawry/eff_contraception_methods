@@ -1,6 +1,9 @@
 # History files
 .Rhistory
 
+# R API session information
+.Rprofile
+
 # Example code in package build process
 *-Ex.R
 
