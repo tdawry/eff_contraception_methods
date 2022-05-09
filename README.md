@@ -5,7 +5,7 @@ source of data is Contraceptive failure in the United States. Trussell,J. Contra
 
 ## The MIT License (MIT)
 
-Copyright (c) 2015 Travis Dawry
+Copyright (c) 2022 Travis Dawry
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

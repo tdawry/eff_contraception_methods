@@ -1,0 +1,106 @@
+---
+title: "Effectiveness of Contraception Methods"
+author: Travis Dawry
+date: May 8, 2022
+format: html
+editor: visual
+---
+
+## Purpose
+
+Visualization to show the expected failure of typical contraception methods.
+
+Percentage of women experiencing an unintended pregnancy during the first year of typical use.
+
+Probability of at least one failure over N years, with typical use.
+
+## Source
+
+Source of data is *Contraceptive failure in the United States*. Trussell,J. Contraception,2011,Vol.83(5),p.398
+
+## Code
+
+```{r libraries}
+library(ggplot2)
+library(viridis)
+library(tibble)
+library(tidyr)
+```
+
+```{r data values}
+none <- 0.85
+withdrawal <- 0.22
+condom <- 0.18
+pill <- 0.09
+iud_copper <- 0.008
+iud_progestin <- 0.002
+female_ster <- 0.005
+male_ster <- 0.0015
+```
+
+```{r functions}
+FailRate <- function(years, method){
+     pbinom(0, years, method, lower.tail = FALSE)
+}
+
+PlotFailRate <- function(years, method){
+     rate <<- pbinom(0, 1:years, method, lower.tail = FALSE)
+     p <- ggplot(as.data.frame(rate), aes(x = seq(1:length(rate)), y = rate))
+
+     p +
+     geom_line(aes(color = rate)) +
+     scale_colour_gradient(high = "red")
+}
+```
+
+```{r examples}
+FailRate(4, condom)
+
+FailRate(4, condom * pill)
+
+PlotFailRate(4, condom)
+
+PlotFailRate(4, condom * pill)
+```
+
+```{r data shape}
+lifetime_failure <- tibble(years = 1:20,
+                           none = FailRate(years, none),
+                           withdrawal = FailRate(years, withdrawal),
+                           condom = FailRate(years, condom),
+                           pill = FailRate(years, pill),
+                           iud_copper = FailRate(years, iud_copper))
+
+failure_table <- pivot_longer(lifetime_failure, cols = -c(years), names_to = "method", values_to = "failure")
+
+#failure_table <- factor(failure_table$method, levels = c("none", "withdrawal", "condom", "pill", "iud_copper"))
+```
+
+```{r plot}
+ggplot(failure_table) +
+    aes(x = years, y = failure, colour = method) +
+    geom_smooth(size = 0.5, se = FALSE, method = "loess", formula = "y ~ x") +
+    geom_hline(yintercept = 0) +
+    geom_hline(yintercept = 1) +
+    scale_colour_viridis_d(option = "D", direction = 1) +
+    scale_x_continuous(expand = expansion(0)) + 
+    scale_y_continuous(expand = expansion(add = 0.01)) +
+    theme_bw()
+```
+
+## Quarto
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
